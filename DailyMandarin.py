@@ -5,8 +5,7 @@ import time
 
 codes.init()
 
-URL = "https://www.transparent.com/word-of-the-day/today/chinese.html"
-
+URL = "https://www.chineseclass101.com/chinese-phrases/"
 codes.driver.get(URL)
 
 time.sleep(15)
@@ -14,11 +13,13 @@ time.sleep(15)
 html = codes.driver.page_source
 soup = BeautifulSoup(html, "html.parser")
 
-# print(codes.API)
-# print(codes.APISecret)
-# print(codes.BearerToken)
+mandarin = codes.driver.find_elements_by_class_name("r101-wotd-widget__word")
+english = codes.driver.find_elements_by_class_name("r101-wotd-widget__english")
+
+#print("Word of the day\n" + str(mandarin[0].text) + "\n" + str(english[0].text))
 
 auth = tweepy.OAuthHandler(codes.API, codes.APISecret)
 auth.set_access_token(codes.AccessToken, codes.AccessTokenSecret)
 api = tweepy.API(auth)
-api.update_status("Hello world")
+message = "Word of the day:\n" + str(mandarin[0].text) + "\n" + str(english[0].text)
+api.update_status("Word of the day")
